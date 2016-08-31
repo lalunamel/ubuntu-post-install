@@ -3,6 +3,9 @@
 # based loosely on http://blog.self.li/post/74294988486/creating-a-post-installation-script-for-ubuntu
 # last updated for Ubuntu 16.04
 
+# disable prompts for apt-get
+DEBIAN_FRONTEND=noninteractive
+
 # add repos
 sudo add-apt-repository -y "deb http://linux.dropbox.com/ubuntu $(lsb_release -sc) main" # dropbox
 sudo add-apt-repository -y "deb http://dl.google.com/linux/chrome/deb/ stable main" # chrome
@@ -43,7 +46,7 @@ make -C ~/bin/direnv install
 sudo apt-get -y autoremove \
     firefox gnome-calendar xterm \
     gnome-mahjongg gnome-mines gnome-sudoku \
-    thunderbird libreoffice
+    thunderbird libreoffice webbrowser-app
 
 ## configure terminal
 # set fish as default shell
@@ -120,6 +123,9 @@ ln -s ~/Dropbox/ubuntu-config/.fonts ~/.fonts
 
 # requires clicks
 sudo apt-get install -y ubuntu-restricted-extras
+
+# reload font cache
+sudo fc-cache -fv
 
 # install android studio and sdk
 echo ""
