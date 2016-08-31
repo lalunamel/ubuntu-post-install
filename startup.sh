@@ -1,12 +1,15 @@
 #!/bin/bash
 
+# based loosely on http://blog.self.li/post/74294988486/creating-a-post-installation-script-for-ubuntu
+# last updated for Ubuntu 16.04
+
 # add repos
-sudo add-apt-repository -y "deb http://linux.dropbox.com/ubuntu $(lsb_release -sc) main"
-sudo add-apt-repository -y "deb http://dl.google.com/linux/chrome/deb/ stable main"
-sudo add-apt-repository -y ppa:webupd8team/sublime-text-3
-sudo add-apt-repository -y ppa:webupd8team/java/ubuntu
-sudo add-apt-repository -y ppa:freyja-dev/unity-tweak-tool-daily
-sudo add-apt-repository -y ppa:fish-shell/release-2
+sudo add-apt-repository -y "deb http://linux.dropbox.com/ubuntu $(lsb_release -sc) main" # dropbox
+sudo add-apt-repository -y "deb http://dl.google.com/linux/chrome/deb/ stable main" # chrome
+sudo add-apt-repository -y ppa:webupd8team/sublime-text-3 # subl
+sudo add-apt-repository -y ppa:webupd8team/java/ubuntu # oracle java
+sudo add-apt-repository -y ppa:freyja-dev/unity-tweak-tool-daily # unity tweak tool
+sudo add-apt-repository -y ppa:fish-shell/release-2 # fish shell
 
 
 # basic update
@@ -31,6 +34,7 @@ sudo apt-get -y install \
     nautilus-open-terminal linux-headers-generic \
     build-essential fish dconf-cli oracle-java7-installer
 # install direnv
+# http://direnv.net/
 git clone https://github.com/direnv/direnv ~/bin/direnv
 make -C ~/bin/direnv install
 
@@ -42,10 +46,12 @@ sudo apt-get -y autoremove \
 
 ## configure terminal
 # set fish as default shell
+# https://fishshell.com/
 chsh -s `which fish`
 curl -Lo ~/.config/fish/functions/fisher.fish --create-dirs git.io/fisher # install fish pacakge manager
 fisher edc/bass # install bass (run bash commands with fish, req for nvm)
 # install solarized theme 
+# https://github.com/Anthony25/gnome-terminal-colors-solarized
 git clone https://github.com/Anthony25/gnome-terminal-colors-solarized.git ~/bin/gnome-terminal-colors-solarized
 ~/code/gnome-terminal-colors-solarized/install.sh
 ~/code/gnome-terminal-colors-solarized/set_dark.sh
@@ -77,6 +83,9 @@ gsettings set com.canonical.Unity.Launcher favorites "[\
 'application://gnome-terminal.desktop'
 'unity://running-apps']"
 
+# auto-hide unity launcher
+gsettings set org.compiz.unityshell:/org/compiz/profiles/unity/plugins/unityshell/ launcher-hide-mode 1
+
 # configure unity launcher by uninstalling desktop search scopes (e.g., searching amazon from the unity launcher)
 # http://askubuntu.com/questions/362549/how-to-disable-all-scopes-filters-and-dash-plugins
 sudo apt-get remove $(dpkg --get-selections | cut -f1 | grep -P "^unity-(lens|scope)-" | grep -vP "unity-(lens|scope)-(home|applications|files)" | tr "\n" " ");
@@ -85,6 +94,17 @@ gsettings set com.canonical.Unity.Lenses always-search "['applications.scope']";
 gsettings set com.canonical.Unity.Dash scopes "['home.scope', 'applications.scope', 'files.scope']";
 
 # configure global keyboard shortcuts
+# disable workspace stuff
+gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-up ""
+gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-down ""
+gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-left ""
+gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-right ""
+gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-up ""
+gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-down ""
+gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-left ""
+gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-right ""
+# set terminal to Ctrl+`
+python3 ./set_keyboard_shortcut.py 'Terminal' 'gnome-terminal' '<Primary>grave'
 
 # screen dimming
 gsettings set org.gnome.desktop.session idle-delay 3600 # screen will dim and lock after 1 hr
