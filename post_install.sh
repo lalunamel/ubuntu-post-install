@@ -91,6 +91,7 @@ ln -s ~/Dropbox/ubuntu-config/.fonts ~/.fonts
 
 
 # add unity launcher shortcuts
+# adding sublime doesn't work for some reason. must be added manually
 gsettings set com.canonical.Unity.Launcher favorites "[\
 'application://ubiquity.desktop', \
 'application://google-chrome.desktop', \
@@ -109,7 +110,8 @@ sudo apt-get remove $(dpkg --get-selections | cut -f1 | grep -P "^unity-(lens|sc
 # searching in the launcher only searches installed applications
 gsettings set com.canonical.Unity.Lenses always-search "['applications.scope']"
 gsettings set com.canonical.Unity.Dash scopes "['home.scope', 'applications.scope', 'files.scope']"
-
+# disable dumb overlay scrollbars
+gsettings set com.canonical.desktop.interface scrollbar-mode normal
 # configure global keyboard shortcuts
 # disable workspace stuff
 gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-up ""
