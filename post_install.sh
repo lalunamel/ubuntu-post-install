@@ -84,7 +84,7 @@ sudo make -C /tmp/chruby-fish-0.8.0 install
 gsettings set org.gnome.desktop.session idle-delay 3600 # screen will dim and lock after 1 hr
 
 # config
-ln -s ~/Dropbox/ubuntu-config/.config ~/.config
+rm -rf ~/.config && ln -sf ~/Dropbox/ubuntu-config/.config ~/
 
 # fonts
 ln -s ~/Dropbox/ubuntu-config/.fonts ~/.fonts
