@@ -80,12 +80,22 @@ wget -O /tmp/chruby-fish-0.8.0.tar.gz https://github.com/JeanMertz/chruby-fish/a
 tar -xzvf /tmp/chruby-fish-0.8.0.tar.gz -C /tmp/
 sudo make -C /tmp/chruby-fish-0.8.0 install
 
+# screen dimming
+gsettings set org.gnome.desktop.session idle-delay 3600 # screen will dim and lock after 1 hr
+
+# config
+ln -s ~/Dropbox/ubuntu-config/.config ~/.config
+
+# fonts
+ln -s ~/Dropbox/ubuntu-config/.fonts ~/.fonts
+
+
 # add unity launcher shortcuts
 gsettings set com.canonical.Unity.Launcher favorites "[\
 'application://ubiquity.desktop', \
 'application://google-chrome.desktop', \
 'application://org.gnome.Nautilus.desktop', \
-'application://sublime_text.desktop', \
+'application://sublime-text.desktop', \
 'application://gnome-terminal.desktop', \
 'unity://running-apps']"
 
@@ -112,15 +122,6 @@ gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-left ""
 gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-right ""
 # set terminal to Ctrl+`
 python3 ./set_keyboard_shortcut.py 'Terminal' 'gnome-terminal' '<Primary>grave'
-
-# screen dimming
-gsettings set org.gnome.desktop.session idle-delay 3600 # screen will dim and lock after 1 hr
-
-# config
-ln -s ~/Dropbox/ubuntu-config/.config ~/.config
-
-# fonts
-ln -s ~/Dropbox/ubuntu-config/.fonts ~/.fonts
 
 # requires clicks
 sudo apt-get install -y ubuntu-restricted-extras
