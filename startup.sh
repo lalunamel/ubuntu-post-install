@@ -58,6 +58,8 @@ git clone https://github.com/Anthony25/gnome-terminal-colors-solarized.git ~/bin
 # change font
 gconftool-2 --set /apps/gnome-terminal/profiles/Default/font --type string "Monaco 12"
 gconftool-2 --set /apps/gnome-terminal/profiles/Default/use_system_font --type=boolean false
+# enable alt left right word navigation
+cp ./.inputrc ~/.inputrc
 
 # install Node
 # https://github.com/creationix/nvm
