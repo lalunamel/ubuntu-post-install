@@ -6,14 +6,21 @@
 # disable prompts for apt-get
 DEBIAN_FRONTEND=noninteractive
 
+echo ""
+echo ""
+echo ""
+echo "Dont leave yet! There are a few prompts along the way..."
+echo ""
+echo ""
+echo ""
+
 # add repos
 sudo add-apt-repository -y "deb http://linux.dropbox.com/ubuntu $(lsb_release -sc) main" # dropbox
 sudo add-apt-repository -y "deb http://dl.google.com/linux/chrome/deb/ stable main" # chrome
 sudo add-apt-repository -y ppa:webupd8team/sublime-text-3 # subl
-sudo add-apt-repository -y ppa:webupd8team/java/ubuntu # oracle java
+sudo add-apt-repository -y ppa:webupd8team/java # oracle java
 sudo add-apt-repository -y ppa:freyja-dev/unity-tweak-tool-daily # unity tweak tool
 sudo add-apt-repository -y ppa:fish-shell/release-2 # fish shell
-
 
 # basic update
 sudo apt-get -y --force-yes update
@@ -25,28 +32,25 @@ rm -rf ~/Public
 rm -rf ~/Templates
 rm -rf ~/Videos
 rm -rf ~/Music
+rm -rf ~/Pictures
 rm ~/examples.desktop
 mkdir ~/code
 mkdir ~/bin
 
 # install apps
-sudo apt-get -y install \
+sudo apt-get -y --allow-unauthenticated install \
     libxss1 sublime-text-installer git gitk gitg \
     dropbox \
-    skype gimp p7zip p7zip-full p7zip-rar unity-tweak-tool \
+    p7zip p7zip-full p7zip-rar unity-tweak-tool \
     indicator-multiload curl gparted google-chrome-stable \
-    nautilus-open-terminal linux-headers-generic \
-    build-essential fish dconf-cli oracle-java7-installer
-# install direnv
-# http://direnv.net/
-git clone https://github.com/direnv/direnv ~/bin/direnv
-make -C ~/bin/direnv install
+    linux-headers-generic \
+    build-essential fish dconf-cli oracle-java7-installer direnv
 
 # remove default apps
 sudo apt-get -y autoremove \
     firefox gnome-calendar xterm \
     gnome-mahjongg gnome-mines gnome-sudoku \
-    thunderbird libreoffice webbrowser-app
+    thunderbird libreoffice libreoffice-\* webbrowser-app
 
 ## configure terminal
 # set fish as default shell
@@ -57,11 +61,7 @@ fisher edc/bass # install bass (run bash commands with fish, req for nvm)
 # install solarized theme 
 # https://github.com/Anthony25/gnome-terminal-colors-solarized
 git clone https://github.com/Anthony25/gnome-terminal-colors-solarized.git ~/bin/gnome-terminal-colors-solarized
-~/code/gnome-terminal-colors-solarized/install.sh
-~/code/gnome-terminal-colors-solarized/set_dark.sh
-# change font
-gconftool-2 --set /apps/gnome-terminal/profiles/Default/font --type string "Monaco 12"
-gconftool-2 --set /apps/gnome-terminal/profiles/Default/use_system_font --type=boolean false
+~/bin/gnome-terminal-colors-solarized/install.sh --scheme dark
 # enable alt left right word navigation
 cp ./.inputrc ~/.inputrc
 
@@ -73,31 +73,32 @@ nvm install node
 # install Ruby
 # https://github.com/postmodern/chruby
 wget -O /tmp/chruby-0.3.9.tar.gz https://github.com/postmodern/chruby/archive/v0.3.9.tar.gz
-tar -xzvf /tmp/chruby-0.3.9.tar.gz
+tar -xzvf /tmp/chruby-0.3.9.tar.gz -C /tmp/
 sudo make -C /tmp/chruby-0.3.9 install
 # https://github.com/JeanMertz/chruby-fish
 wget -O /tmp/chruby-fish-0.8.0.tar.gz https://github.com/JeanMertz/chruby-fish/archive/v0.8.0.tar.gz
-tar -xzvf /tmp/chruby-fish-0.8.0.tar.gz
+tar -xzvf /tmp/chruby-fish-0.8.0.tar.gz -C /tmp/
 sudo make -C /tmp/chruby-fish-0.8.0 install
 
 # add unity launcher shortcuts
 gsettings set com.canonical.Unity.Launcher favorites "[\
 'application://ubiquity.desktop', \
-'application://google-chrome.desktop'\
+'application://google-chrome.desktop', \
 'application://org.gnome.Nautilus.desktop', \
-'application://sublime_text.desktop'\
-'application://gnome-terminal.desktop'
+'application://sublime_text.desktop', \
+'application://gnome-terminal.desktop', \
 'unity://running-apps']"
 
 # auto-hide unity launcher
-gsettings set org.compiz.unityshell:/org/compiz/profiles/unity/plugins/unityshell/ launcher-hide-mode 1
+gsettings set org.compiz.unityshell:/org/compiz/profiles/unity/plugins/unityshell/ launcher-hide-mode 1 # this doesn't work for some reason
+# do settings > appearance > behavior instead
 
 # configure unity launcher by uninstalling desktop search scopes (e.g., searching amazon from the unity launcher)
 # http://askubuntu.com/questions/362549/how-to-disable-all-scopes-filters-and-dash-plugins
-sudo apt-get remove $(dpkg --get-selections | cut -f1 | grep -P "^unity-(lens|scope)-" | grep -vP "unity-(lens|scope)-(home|applications|files)" | tr "\n" " ");
+sudo apt-get remove $(dpkg --get-selections | cut -f1 | grep -P "^unity-(lens|scope)-" | grep -vP "unity-(lens|scope)-(home|applications|files)" | tr "\n" " ")
 # searching in the launcher only searches installed applications
-gsettings set com.canonical.Unity.Lenses always-search "['applications.scope']";
-gsettings set com.canonical.Unity.Dash scopes "['home.scope', 'applications.scope', 'files.scope']";
+gsettings set com.canonical.Unity.Lenses always-search "['applications.scope']"
+gsettings set com.canonical.Unity.Dash scopes "['home.scope', 'applications.scope', 'files.scope']"
 
 # configure global keyboard shortcuts
 # disable workspace stuff
@@ -124,9 +125,6 @@ ln -s ~/Dropbox/ubuntu-config/.fonts ~/.fonts
 # requires clicks
 sudo apt-get install -y ubuntu-restricted-extras
 
-# reload font cache
-sudo fc-cache -fv
-
 # install android studio and sdk
 echo ""
 echo ""
@@ -136,6 +134,9 @@ echo "https://developer.android.com/studio/index.html"
 echo ""
 echo "Download nvidia drivers"
 echo "http://www.nvidia.com/download/driverResults.aspx/77525/en-us"
+echo ""
+echo "Once dropbox finishes syncing, reload font cache"
+echo "sudo fc-cache -fv"
 
 # reboot
 echo ""
