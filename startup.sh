@@ -22,6 +22,7 @@ rm -rf ~/Public
 rm -rf ~/Templates
 rm -rf ~/Videos
 rm -rf ~/Music
+rm ~/examples.desktop
 mkdir ~/code
 mkdir ~/bin
 
