@@ -47,7 +47,7 @@ sudo apt-get -y --allow-unauthenticated install \
     p7zip p7zip-full p7zip-rar unity-tweak-tool \
     indicator-multiload curl gparted google-chrome-stable \
     linux-headers-generic \
-    build-essential fish dconf-cli oracle-java7-installer direnv \
+    build-essential fish dconf-cli oracle-java8-installer direnv \
     lib32z1 lib32ncurses5 libbz2-1.0:i386 lib32stdc++6
     
 
