@@ -22,6 +22,9 @@ sudo add-apt-repository -y ppa:webupd8team/java # oracle java
 sudo add-apt-repository -y ppa:freyja-dev/unity-tweak-tool-daily # unity tweak tool
 sudo add-apt-repository -y ppa:fish-shell/release-2 # fish shell
 
+# enable i386 support for installation of
+sudo dpkg --add-architecture i386
+
 # basic update
 sudo apt-get -y --force-yes update
 sudo apt-get -y --force-yes upgrade
@@ -44,7 +47,9 @@ sudo apt-get -y --allow-unauthenticated install \
     p7zip p7zip-full p7zip-rar unity-tweak-tool \
     indicator-multiload curl gparted google-chrome-stable \
     linux-headers-generic \
-    build-essential fish dconf-cli oracle-java7-installer direnv
+    build-essential fish dconf-cli oracle-java7-installer direnv \
+    lib32z1 lib32ncurses5 libbz2-1.0:i386 lib32stdc++6
+    
 
 # remove default apps
 sudo apt-get -y autoremove \
