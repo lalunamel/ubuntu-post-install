@@ -3,6 +3,8 @@
 # based loosely on http://blog.self.li/post/74294988486/creating-a-post-installation-script-for-ubuntu
 # last updated for Ubuntu 16.04
 
+set -e
+
 # disable prompts for apt-get
 DEBIAN_FRONTEND=noninteractive
 
