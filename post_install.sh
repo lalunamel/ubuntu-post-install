@@ -132,6 +132,24 @@ gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-right ""
 # set terminal to Ctrl+`
 python3 ./set_keyboard_shortcut.py 'Terminal' 'gnome-terminal' '<Primary>grave'
 
+# set keyboard shortcuts so they're similar to mac
+
+# disable activating a window's context menu (was super-space)
+gsettings set org.gnome.desktop.wm.keybindings activate-window-menu "['disabled']"
+# set open unity search with tapping Super + Space (holding will show keyboard help overlay)
+gsettings set org.compiz.profiles.unity.plugins.unityshell show-launcher "<Super>space"
+# set open window action search with tapping Alt + Space
+gsettings set org.compiz.integrated show-hud "['<Alt>space']"
+# don't allow switching between the same type of application using alt tab (don't mix alt and tilde tab)
+gsettings set org.compiz.profiles.unity.plugins.unityshell switch-strictly-between-applications "true"
+# set switch all types of windows (alt tab) to super tab
+gsettings set org.compiz.profiles.unity.plugins.unityshell alt-tab-forward "<Super>Tab"
+gsettings set org.compiz.profiles.unity.plugins.unityshell alt-tab-prev "<Shift><Super>Tab"
+# set switch currently focused window to super tilde
+gsettings set org.compiz.profiles.unity.plugins.unityshell alt-tab-next-window "<Super>grave"
+gsettings set org.compiz.profiles.unity.plugins.unityshell alt-tab-prev-window "<Shift><Super>asciitilde"
+
+
 # configure indicator-multiload
 # one of the colors doesn't get set if the duplicated lines are deleted
 # loc are free, so w/e
