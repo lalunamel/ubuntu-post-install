@@ -106,6 +106,11 @@ gsettings set com.canonical.Unity.Launcher favorites "[\
 'application://sublime-text.desktop', \
 'application://gnome-terminal.desktop', \
 'unity://running-apps']"
+# set each app to it's Super+num key
+python3 ./set_keyboard_shortcut.py 'GoogleChrome' 'google-chrome' '<Super>1'
+python3 ./set_keyboard_shortcut.py 'Nautilus' 'nautilus' '<Super>2'
+python3 ./set_keyboard_shortcut.py 'SublimeText' 'subl' '<Super>3'
+python3 ./set_keyboard_shortcut.py 'Terminal' 'gnome-terminal' '<Super>4'
 
 # auto-hide unity launcher
 gsettings set org.compiz.unityshell:/org/compiz/profiles/unity/plugins/unityshell/ launcher-hide-mode 1 # this doesn't work for some reason
@@ -129,15 +134,13 @@ gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-up ""
 gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-down ""
 gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-left ""
 gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-right ""
-# set terminal to Ctrl+`
-python3 ./set_keyboard_shortcut.py 'Terminal' 'gnome-terminal' '<Primary>grave'
 
 # set keyboard shortcuts so they're similar to mac
 
 # disable activating a window's context menu (was super-space)
 gsettings set org.gnome.desktop.wm.keybindings activate-window-menu "['disabled']"
 # set open unity search with tapping Super + Space (holding will show keyboard help overlay)
-gsettings set org.compiz.profiles.unity.plugins.unityshell show-launcher "<Super>space"
+dconf write /org/compiz/profiles/unity/plugins/unityshell/show-launcher "'<Super>space'"
 # set open window action search with tapping Alt + Space
 gsettings set org.compiz.integrated show-hud "['<Alt>space']"
 # don't allow switching between the same type of application using alt tab (don't mix alt and tilde tab)
