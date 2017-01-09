@@ -5,6 +5,8 @@
 
 set -e
 
+CONFIG_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
 # disable prompts for apt-get
 DEBIAN_FRONTEND=noninteractive
 
@@ -50,7 +52,8 @@ sudo apt-get -y --allow-unauthenticated install \
     indicator-multiload curl gparted google-chrome-stable \
     linux-headers-generic \
     build-essential fish dconf-cli oracle-java8-installer direnv \
-    lib32z1 lib32ncurses5 libbz2-1.0:i386 lib32stdc++6
+    lib32z1 lib32ncurses5 libbz2-1.0:i386 lib32stdc++6 \
+    xbindkeys
     
 
 # remove default apps
@@ -151,6 +154,16 @@ gsettings set org.compiz.profiles.unity.plugins.unityshell alt-tab-prev "<Shift>
 # set switch currently focused window to super tilde
 gsettings set org.compiz.profiles.unity.plugins.unityshell alt-tab-next-window "<Super>grave"
 gsettings set org.compiz.profiles.unity.plugins.unityshell alt-tab-prev-window "<Shift><Super>asciitilde"
+
+
+# configure xbindkeys
+# disable 'window picker' which is normally Cmd + w
+dconf write /org/compiz/profiles/unity/plugins/scale/initiate-key "'Disabled'"
+# disable '--something--' which is normally Cmd + s (search in compizConfig settings manager for <Super>s)
+# I don't remember what the key was originally, but I disabled it manually in CCsettings mgr
+# Copy xbindkeys to the right place
+cp $CONFIG_DIR/xbindkeys ~/.config
+ln ~/.config/xbindkeys/.xbindkeysrc ~/.xbindkeysrc
 
 
 # configure indicator-multiload
