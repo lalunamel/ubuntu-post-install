@@ -51,7 +51,7 @@ sudo apt-get -y --allow-unauthenticated install \
     linux-headers-generic \
     build-essential fish dconf-cli oracle-java8-installer direnv \
     lib32z1 lib32ncurses5 libbz2-1.0:i386 lib32stdc++6 \
-    atom mate-terminal yarn redshift-gtk
+    atom mate-terminal redshift-gtk
 
 
 # remove default apps
@@ -85,6 +85,7 @@ nvm install node
 
 curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add - # yarn instead of npm
 echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list # yarn instead of npm
+sudo apt-get install yarn
 
 # install Ruby
 # https://github.com/postmodern/chruby
