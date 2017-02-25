@@ -69,7 +69,7 @@ sudo apt-get -y --force-yes upgrade
 # https://fishshell.com/
 chsh -s `which fish`
 curl -Lo ~/.config/fish/functions/fisher.fish --create-dirs git.io/fisher # install fish pacakge manager
-fisher edc/bass # install bass (run bash commands with fish, req for nvm)
+fisher edc/bass # install bass (run bash commands with fish, req for nvm), TODO this line doesn't work
 # install solarized theme
 # https://github.com/oz123/solarized-mate-terminal
 git clone https://github.com/oz123/solarized-mate-terminal.git ~/bin/mate-terminal-colors-solarized
@@ -81,10 +81,11 @@ cp ./.inputrc ~/.inputrc
 # install Node
 # https://github.com/creationix/nvm
 curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.1/install.sh | bash
-nvm install node
+nvm install node # TODO can't do this until terminal restart
 
 curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add - # yarn instead of npm
 echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list # yarn instead of npm
+sudo apt-get update
 sudo apt-get install yarn
 
 # install Ruby
@@ -112,6 +113,8 @@ ln -s ~/Dropbox/ubuntu-config/.fonts ~/.fonts
 
 
 # add unity launcher shortcuts
+# TODO this doesn't work 
+# failed to commit changes to dconf: GDBus.Errororg.grk.GDBus.UnmappedGError.Quark._g_2dfile_2dquark.Code4: Failed to create file '/home/cody/.config/dconf/user.JQUEWY': No such file or directory
 gsettings set com.canonical.Unity.Launcher favorites "[\
 'application://ubiquity.desktop', \
 'application://google-chrome.desktop', \
@@ -120,6 +123,7 @@ gsettings set com.canonical.Unity.Launcher favorites "[\
 'application://mate-terminal.desktop', \
 'unity://running-apps']"
 # set each app to it's Super+num key
+# TODO these don't work any more
 python3 ./set_keyboard_shortcut.py 'GoogleChrome' 'google-chrome' '<Super>1'
 python3 ./set_keyboard_shortcut.py 'Nautilus' 'nautilus' '<Super>2'
 python3 ./set_keyboard_shortcut.py 'Atom' 'atom' '<Super>3'
@@ -132,13 +136,15 @@ gsettings set org.compiz.unityshell:/org/compiz/profiles/unity/plugins/unityshel
 # configure unity launcher by uninstalling desktop search scopes (e.g., searching amazon from the unity launcher)
 # http://askubuntu.com/questions/362549/how-to-disable-all-scopes-filters-and-dash-plugins
 sudo apt-get remove $(dpkg --get-selections | cut -f1 | grep -P "^unity-(lens|scope)-" | grep -vP "unity-(lens|scope)-(home|applications|files)" | tr "\n" " ")
-# searching in the launcher only searches installed applications
+# searching in the launcher only searches installed 
+# TODO these don't work any more
 gsettings set com.canonical.Unity.Lenses always-search "['applications.scope']"
 gsettings set com.canonical.Unity.Dash scopes "['home.scope', 'applications.scope', 'files.scope']"
 # disable dumb overlay scrollbars
 gsettings set com.canonical.desktop.interface scrollbar-mode normal
 # configure global keyboard shortcuts
 # disable workspace stuff
+# TODO this doesn't work. gsettings seems fucked
 gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-up ""
 gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-down ""
 gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-left ""
