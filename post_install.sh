@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # based loosely on http://blog.self.li/post/74294988486/creating-a-post-installation-script-for-ubuntu
-# last updated for Ubuntu 16.04
+# last updated for Ubuntu 16.04.2
 
 set -e
 
@@ -21,10 +21,14 @@ echo ""
 # add repos
 sudo add-apt-repository -y "deb http://linux.dropbox.com/ubuntu $(lsb_release -sc) main" # dropbox
 sudo add-apt-repository -y "deb http://dl.google.com/linux/chrome/deb/ stable main" # chrome
-sudo add-apt-repository -y ppa:webupd8team/sublime-text-3 # subl
 sudo add-apt-repository -y ppa:webupd8team/java # oracle java
 sudo add-apt-repository -y ppa:freyja-dev/unity-tweak-tool-daily # unity tweak tool
 sudo add-apt-repository -y ppa:fish-shell/release-2 # fish shell
+sudo add-apt-repository ppa:webupd8team/atom # atom
+sudo add-apt-repository ppa:ubuntu-mate-dev/xenial-mate # mate-terminal (better styling than gnome terminal)
+curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add - # yarn instead of npm
+echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list # yarn instead of npm
+
 
 # enable i386 support for installation of
 sudo dpkg --add-architecture i386
@@ -46,15 +50,15 @@ mkdir ~/bin
 
 # install apps
 sudo apt-get -y --allow-unauthenticated install \
-    libxss1 sublime-text-installer git gitk gitg \
+    libxss1 git gitk gitg \
     dropbox \
     p7zip p7zip-full p7zip-rar unity-tweak-tool \
     indicator-multiload curl gparted google-chrome-stable \
     linux-headers-generic \
     build-essential fish dconf-cli oracle-java8-installer direnv \
     lib32z1 lib32ncurses5 libbz2-1.0:i386 lib32stdc++6 \
-    xbindkeys
-    
+    atom mate-terminal yarn redshift-gtk
+
 
 # remove default apps
 sudo apt-get -y autoremove \
@@ -62,22 +66,24 @@ sudo apt-get -y autoremove \
     gnome-mahjongg gnome-mines gnome-sudoku \
     thunderbird libreoffice libreoffice-\* webbrowser-app
 
+
 ## configure terminal
 # set fish as default shell
 # https://fishshell.com/
 chsh -s `which fish`
 curl -Lo ~/.config/fish/functions/fisher.fish --create-dirs git.io/fisher # install fish pacakge manager
 fisher edc/bass # install bass (run bash commands with fish, req for nvm)
-# install solarized theme 
-# https://github.com/Anthony25/gnome-terminal-colors-solarized
-git clone https://github.com/Anthony25/gnome-terminal-colors-solarized.git ~/bin/gnome-terminal-colors-solarized
-~/bin/gnome-terminal-colors-solarized/install.sh --scheme dark
+# install solarized theme
+# https://github.com/oz123/solarized-mate-terminal
+git clone https://github.com/oz123/solarized-mate-terminal.git ~/bin/mate-terminal-colors-solarized
+~/bin/mate-terminal-colors-solarized/solarized-mate.sh
+echo "Installed solarized theme to mate-terminal. You must select theme manually to apply it."
 # enable alt left right word navigation
 cp ./.inputrc ~/.inputrc
 
 # install Node
 # https://github.com/creationix/nvm
-curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.31.6/install.sh | bash
+curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.1/install.sh | bash
 nvm install node
 
 # install Ruby
@@ -90,29 +96,32 @@ wget -O /tmp/chruby-fish-0.8.0.tar.gz https://github.com/JeanMertz/chruby-fish/a
 tar -xzvf /tmp/chruby-fish-0.8.0.tar.gz -C /tmp/
 sudo make -C /tmp/chruby-fish-0.8.0 install
 
+# install atom pkgs
+apm install \
+  file-icons react pigments react-snippets
+
 # screen dimming
 gsettings set org.gnome.desktop.session idle-delay 3600 # screen will dim and lock after 1 hr
 
-# config
+# copy config folder from dropbox
 rm -rf ~/.config && ln -sf ~/Dropbox/ubuntu-config/.config ~/
 
-# fonts
+# install fonts from dropbox
 ln -s ~/Dropbox/ubuntu-config/.fonts ~/.fonts
 
 
 # add unity launcher shortcuts
-# adding sublime doesn't work for some reason. must be added manually
 gsettings set com.canonical.Unity.Launcher favorites "[\
 'application://ubiquity.desktop', \
 'application://google-chrome.desktop', \
 'application://org.gnome.Nautilus.desktop', \
-'application://sublime-text.desktop', \
-'application://gnome-terminal.desktop', \
+'application://atom.desktop', \
+'application://mate-terminal.desktop', \
 'unity://running-apps']"
 # set each app to it's Super+num key
 python3 ./set_keyboard_shortcut.py 'GoogleChrome' 'google-chrome' '<Super>1'
 python3 ./set_keyboard_shortcut.py 'Nautilus' 'nautilus' '<Super>2'
-python3 ./set_keyboard_shortcut.py 'SublimeText' 'subl' '<Super>3'
+python3 ./set_keyboard_shortcut.py 'Atom' 'atom' '<Super>3'
 python3 ./set_keyboard_shortcut.py 'Terminal' 'gnome-terminal' '<Super>4'
 
 # auto-hide unity launcher
@@ -156,16 +165,6 @@ gsettings set org.compiz.profiles.unity.plugins.unityshell alt-tab-next-window "
 gsettings set org.compiz.profiles.unity.plugins.unityshell alt-tab-prev-window "<Shift><Super>asciitilde"
 
 
-# configure xbindkeys
-# disable 'window picker' which is normally Cmd + w
-dconf write /org/compiz/profiles/unity/plugins/scale/initiate-key "'Disabled'"
-# disable '--something--' which is normally Cmd + s (search in compizConfig settings manager for <Super>s)
-# I don't remember what the key was originally, but I disabled it manually in CCsettings mgr
-# Copy xbindkeys to the right place
-cp $CONFIG_DIR/xbindkeys ~/.config
-ln ~/.config/xbindkeys/.xbindkeysrc ~/.xbindkeysrc
-
-
 # configure indicator-multiload
 # one of the colors doesn't get set if the duplicated lines are deleted
 # loc are free, so w/e
@@ -199,7 +198,7 @@ sudo apt-get install -y ubuntu-restricted-extras
 echo ""
 echo ""
 echo ""
-echo "Download android studio and sdk"
+echo "Download android studio and sdk to `~/bin`!"
 echo "https://developer.android.com/studio/index.html"
 echo ""
 echo "Install Nvidia drivers (this might break something major, so do it separately)"
