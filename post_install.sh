@@ -106,6 +106,8 @@ apm install \
 gsettings set org.gnome.desktop.session idle-delay 3600 # screen will dim and lock after 1 hr
 
 # copy config folder from dropbox
+# TODO this doesn't work because the dropbox folder doesn't exist
+# it just creates a file at ~/.config
 rm -rf ~/.config && ln -sf ~/Dropbox/ubuntu-config/.config ~/
 
 # install fonts from dropbox
