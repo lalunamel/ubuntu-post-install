@@ -208,6 +208,8 @@ echo ""
 echo "Once dropbox finishes syncing, reload font cache"
 echo "sudo fc-cache -fv"
 
+echo "Don't forget to generate a new RSA key to upload to github!"
+
 # reboot
 echo ""
 echo "Reboot machine"
