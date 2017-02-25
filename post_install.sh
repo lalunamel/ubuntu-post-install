@@ -38,7 +38,7 @@ rm -rf ~/Templates
 rm -rf ~/Videos
 rm -rf ~/Music
 rm -rf ~/Pictures
-rm ~/examples.desktop
+rm -rf ~/examples.desktop
 mkdir ~/code
 mkdir ~/bin
 
