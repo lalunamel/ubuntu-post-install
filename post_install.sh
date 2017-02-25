@@ -26,16 +26,10 @@ sudo add-apt-repository -y ppa:freyja-dev/unity-tweak-tool-daily # unity tweak t
 sudo add-apt-repository -y ppa:fish-shell/release-2 # fish shell
 sudo add-apt-repository ppa:webupd8team/atom # atom
 sudo add-apt-repository ppa:ubuntu-mate-dev/xenial-mate # mate-terminal (better styling than gnome terminal)
-curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add - # yarn instead of npm
-echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list # yarn instead of npm
 
 
 # enable i386 support for installation of
 sudo dpkg --add-architecture i386
-
-# basic update
-sudo apt-get -y --force-yes update
-sudo apt-get -y --force-yes upgrade
 
 # configure home dir
 rm -rf ~/Documents
@@ -66,6 +60,9 @@ sudo apt-get -y autoremove \
     gnome-mahjongg gnome-mines gnome-sudoku \
     thunderbird libreoffice libreoffice-\* webbrowser-app
 
+# basic update
+sudo apt-get -y --force-yes update
+sudo apt-get -y --force-yes upgrade
 
 ## configure terminal
 # set fish as default shell
@@ -85,6 +82,9 @@ cp ./.inputrc ~/.inputrc
 # https://github.com/creationix/nvm
 curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.1/install.sh | bash
 nvm install node
+
+curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add - # yarn instead of npm
+echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list # yarn instead of npm
 
 # install Ruby
 # https://github.com/postmodern/chruby
