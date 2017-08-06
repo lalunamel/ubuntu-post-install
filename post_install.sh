@@ -69,7 +69,7 @@ sudo apt-get -y --force-yes upgrade
 # https://fishshell.com/
 chsh -s `which fish`
 curl -Lo ~/.config/fish/functions/fisher.fish --create-dirs git.io/fisher # install fish pacakge manager
-fisher edc/bass # install bass (run bash commands with fish, req for nvm), TODO this line doesn't work
+fisher edc/bass # install bass (run bash commands with fish, req for nvm), TODO this line doesn't work because it needs to be run in fish
 # install solarized theme
 # https://github.com/oz123/solarized-mate-terminal
 git clone https://github.com/oz123/solarized-mate-terminal.git ~/bin/mate-terminal-colors-solarized
