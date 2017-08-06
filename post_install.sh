@@ -25,6 +25,7 @@ sudo add-apt-repository -y ppa:webupd8team/java # oracle java
 sudo add-apt-repository -y ppa:freyja-dev/unity-tweak-tool-daily # unity tweak tool
 sudo add-apt-repository -y ppa:fish-shell/release-2 # fish shell
 sudo add-apt-repository -y ppa:ubuntu-mate-dev/xenial-mate # mate-terminal (better styling than gnome terminal)
+sudo apt-get update
 
 
 # enable i386 support for installation of
@@ -50,12 +51,12 @@ sudo apt-get -y --allow-unauthenticated install \
     linux-headers-generic \
     build-essential fish dconf-cli oracle-java8-installer direnv \
     lib32z1 lib32ncurses5 libbz2-1.0:i386 lib32stdc++6 \
-    atom mate-terminal redshift-gtk
+    mate-terminal redshift-gtk
 
 
 # remove default apps
 sudo apt-get -y autoremove \
-    firefox gnome-calendar xterm \
+    gnome-calendar xterm \
     gnome-mahjongg gnome-mines gnome-sudoku \
     thunderbird libreoffice libreoffice-\* webbrowser-app
 
@@ -97,17 +98,14 @@ wget -O /tmp/chruby-fish-0.8.0.tar.gz https://github.com/JeanMertz/chruby-fish/a
 tar -xzvf /tmp/chruby-fish-0.8.0.tar.gz -C /tmp/
 sudo make -C /tmp/chruby-fish-0.8.0 install
 
-# install atom pkgs
-apm install \
-  file-icons react pigments react-snippets
-
 # screen dimming
 gsettings set org.gnome.desktop.session idle-delay 3600 # screen will dim and lock after 1 hr
 
 # copy config folder from dropbox
 # TODO this doesn't work because the dropbox folder doesn't exist
 # it just creates a file at ~/.config
-rm -rf ~/.config && ln -sf ~/Dropbox/ubuntu-config/.config ~/
+# commented out: linking against the DB folder causes issues if using on multiple machines
+# rm -rf ~/.config && ln -sf ~/Dropbox/ubuntu-config/.config ~/
 
 # install fonts from dropbox
 ln -s ~/Dropbox/ubuntu-config/.fonts ~/.fonts
