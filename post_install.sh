@@ -219,6 +219,8 @@ echo "sudo fc-cache -fv"
 
 echo "Don't forget to generate a new RSA key to upload to github!"
 
+echo "To use ubutnu with an HDPI monitor, adjust your scaling settings in Display preferences"
+
 # reboot
 echo ""
 echo "Reboot machine"
