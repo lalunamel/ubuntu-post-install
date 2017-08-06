@@ -24,8 +24,7 @@ sudo add-apt-repository -y "deb http://dl.google.com/linux/chrome/deb/ stable ma
 sudo add-apt-repository -y ppa:webupd8team/java # oracle java
 sudo add-apt-repository -y ppa:freyja-dev/unity-tweak-tool-daily # unity tweak tool
 sudo add-apt-repository -y ppa:fish-shell/release-2 # fish shell
-sudo add-apt-repository ppa:webupd8team/atom # atom
-sudo add-apt-repository ppa:ubuntu-mate-dev/xenial-mate # mate-terminal (better styling than gnome terminal)
+sudo add-apt-repository -y ppa:ubuntu-mate-dev/xenial-mate # mate-terminal (better styling than gnome terminal)
 
 
 # enable i386 support for installation of
