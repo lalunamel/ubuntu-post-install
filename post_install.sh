@@ -80,6 +80,7 @@ sudo apt-get -y --force-yes upgrade
 # configure git
 git config --global user.email 'cody.sehl@gmail.com'
 git config --global user.name 'Cody Sehl'
+git config --global core.editor 'vim'
 
 ## configure terminal
 # set fish as default shell
