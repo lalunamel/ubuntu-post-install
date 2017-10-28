@@ -45,14 +45,27 @@ mkdir ~/bin
 # install apps
 sudo apt-get -y --allow-unauthenticated install \
     libxss1 git gitk gitg \
-    dropbox \
     p7zip p7zip-full p7zip-rar unity-tweak-tool \
-    indicator-multiload curl gparted google-chrome-stable \
+    indicator-multiload curl gparted \
     linux-headers-generic \
     build-essential fish dconf-cli oracle-java8-installer direnv \
     lib32z1 lib32ncurses5 libbz2-1.0:i386 lib32stdc++6 \
-    mate-terminal redshift-gtk
+    vim \
 
+# nice to have stuff
+sudo apt-get install -y ubuntu-restricted-extras
+
+# google chrome
+firefox https://www.google.com/chrome/browser/desktop/index.html
+
+# dropbox
+firefox https://www.dropbox.com/install
+
+# sublime text
+wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add -
+echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sources.list.d/sublime-text.list
+sudo apt-get update
+sudo apt-get install sublime-text
 
 # remove default apps
 sudo apt-get -y autoremove \
@@ -64,24 +77,20 @@ sudo apt-get -y autoremove \
 sudo apt-get -y --force-yes update
 sudo apt-get -y --force-yes upgrade
 
+# configure git
+git config --global user.email 'cody.sehl@gmail.com'
+git config --global user.name 'Cody Sehl'
+
 ## configure terminal
 # set fish as default shell
 # https://fishshell.com/
 chsh -s `which fish`
 curl -Lo ~/.config/fish/functions/fisher.fish --create-dirs git.io/fisher # install fish pacakge manager
-fisher edc/bass # install bass (run bash commands with fish, req for nvm), TODO this line doesn't work because it needs to be run in fish
-# install solarized theme
-# https://github.com/oz123/solarized-mate-terminal
-git clone https://github.com/oz123/solarized-mate-terminal.git ~/bin/mate-terminal-colors-solarized
-~/bin/mate-terminal-colors-solarized/solarized-mate.sh
-echo "Installed solarized theme to mate-terminal. You must select theme manually to apply it."
-# enable alt left right word navigation
-cp ./.inputrc ~/.inputrc
 
 # install Node
 # https://github.com/creationix/nvm
 curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.1/install.sh | bash
-nvm install node # TODO can't do this until terminal restart
+fisher nvm # install nvm TODO can't do this until terminal restart
 
 curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add - # yarn instead of npm
 echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list # yarn instead of npm
@@ -110,67 +119,6 @@ gsettings set org.gnome.desktop.session idle-delay 3600 # screen will dim and lo
 # install fonts from dropbox
 ln -s ~/Dropbox/ubuntu-config/.fonts ~/.fonts
 
-
-# add unity launcher shortcuts
-# TODO this doesn't work 
-# failed to commit changes to dconf: GDBus.Errororg.grk.GDBus.UnmappedGError.Quark._g_2dfile_2dquark.Code4: Failed to create file '/home/cody/.config/dconf/user.JQUEWY': No such file or directory
-gsettings set com.canonical.Unity.Launcher favorites "[\
-'application://ubiquity.desktop', \
-'application://google-chrome.desktop', \
-'application://org.gnome.Nautilus.desktop', \
-'application://atom.desktop', \
-'application://mate-terminal.desktop', \
-'unity://running-apps']"
-# set each app to it's Super+num key
-# TODO these don't work any more
-python3 ./set_keyboard_shortcut.py 'GoogleChrome' 'google-chrome' '<Super>1'
-python3 ./set_keyboard_shortcut.py 'Nautilus' 'nautilus' '<Super>2'
-python3 ./set_keyboard_shortcut.py 'Atom' 'atom' '<Super>3'
-python3 ./set_keyboard_shortcut.py 'Terminal' 'gnome-terminal' '<Super>4'
-
-# auto-hide unity launcher
-gsettings set org.compiz.unityshell:/org/compiz/profiles/unity/plugins/unityshell/ launcher-hide-mode 1 # this doesn't work for some reason
-# do settings > appearance > behavior instead
-
-# configure unity launcher by uninstalling desktop search scopes (e.g., searching amazon from the unity launcher)
-# http://askubuntu.com/questions/362549/how-to-disable-all-scopes-filters-and-dash-plugins
-sudo apt-get remove $(dpkg --get-selections | cut -f1 | grep -P "^unity-(lens|scope)-" | grep -vP "unity-(lens|scope)-(home|applications|files)" | tr "\n" " ")
-# searching in the launcher only searches installed 
-# TODO these don't work any more
-gsettings set com.canonical.Unity.Lenses always-search "['applications.scope']"
-gsettings set com.canonical.Unity.Dash scopes "['home.scope', 'applications.scope', 'files.scope']"
-# disable dumb overlay scrollbars
-gsettings set com.canonical.desktop.interface scrollbar-mode normal
-# configure global keyboard shortcuts
-# disable workspace stuff
-# TODO this doesn't work. gsettings seems fucked
-gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-up ""
-gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-down ""
-gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-left ""
-gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-right ""
-gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-up ""
-gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-down ""
-gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-left ""
-gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-right ""
-
-# set keyboard shortcuts so they're similar to mac
-
-# disable activating a window's context menu (was super-space)
-gsettings set org.gnome.desktop.wm.keybindings activate-window-menu "['disabled']"
-# set open unity search with tapping Super + Space (holding will show keyboard help overlay)
-dconf write /org/compiz/profiles/unity/plugins/unityshell/show-launcher "'<Super>space'"
-# set open window action search with tapping Alt + Space
-gsettings set org.compiz.integrated show-hud "['<Alt>space']"
-# don't allow switching between the same type of application using alt tab (don't mix alt and tilde tab)
-gsettings set org.compiz.profiles.unity.plugins.unityshell switch-strictly-between-applications "true"
-# set switch all types of windows (alt tab) to super tab
-gsettings set org.compiz.profiles.unity.plugins.unityshell alt-tab-forward "<Super>Tab"
-gsettings set org.compiz.profiles.unity.plugins.unityshell alt-tab-prev "<Shift><Super>Tab"
-# set switch currently focused window to super tilde
-gsettings set org.compiz.profiles.unity.plugins.unityshell alt-tab-next-window "<Super>grave"
-gsettings set org.compiz.profiles.unity.plugins.unityshell alt-tab-prev-window "<Shift><Super>asciitilde"
-
-
 # configure indicator-multiload
 # one of the colors doesn't get set if the duplicated lines are deleted
 # loc are free, so w/e
@@ -198,7 +146,7 @@ gsettings set de.mh21.indicator-multiload.traces.mem3 color 'traditional:mem3'
 gsettings set de.mh21.indicator-multiload.traces.mem4 color 'traditional:mem4'
 
 # requires clicks
-sudo apt-get install -y ubuntu-restricted-extras
+
 
 # install android studio and sdk
 echo ""
