@@ -22,9 +22,7 @@ echo ""
 sudo add-apt-repository -y "deb http://linux.dropbox.com/ubuntu $(lsb_release -sc) main" # dropbox
 sudo add-apt-repository -y "deb http://dl.google.com/linux/chrome/deb/ stable main" # chrome
 sudo add-apt-repository -y ppa:webupd8team/java # oracle java
-sudo add-apt-repository -y ppa:freyja-dev/unity-tweak-tool-daily # unity tweak tool
 sudo add-apt-repository -y ppa:fish-shell/release-2 # fish shell
-sudo add-apt-repository -y ppa:ubuntu-mate-dev/xenial-mate # mate-terminal (better styling than gnome terminal)
 sudo apt-get update
 
 
@@ -45,7 +43,7 @@ mkdir ~/bin
 # install apps
 sudo apt-get -y --allow-unauthenticated install \
     libxss1 git gitk gitg \
-    p7zip p7zip-full p7zip-rar unity-tweak-tool \
+    p7zip p7zip-full p7zip-rar \
     indicator-multiload curl gparted \
     linux-headers-generic \
     build-essential fish dconf-cli oracle-java8-installer direnv \
@@ -87,6 +85,7 @@ git config --global core.editor 'vim'
 # https://fishshell.com/
 chsh -s `which fish`
 curl -Lo ~/.config/fish/functions/fisher.fish --create-dirs git.io/fisher # install fish pacakge manager
+echo "set PATH /home/cody/bin \$PATH" > ~/.config/fish/config.fish # Add ~/bin to the PATH
 
 # install Node
 # https://github.com/creationix/nvm
@@ -98,15 +97,15 @@ echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/source
 sudo apt-get update
 sudo apt-get install yarn
 
-# install Ruby
-# https://github.com/postmodern/chruby
-wget -O /tmp/chruby-0.3.9.tar.gz https://github.com/postmodern/chruby/archive/v0.3.9.tar.gz
-tar -xzvf /tmp/chruby-0.3.9.tar.gz -C /tmp/
-sudo make -C /tmp/chruby-0.3.9 install
-# https://github.com/JeanMertz/chruby-fish
-wget -O /tmp/chruby-fish-0.8.0.tar.gz https://github.com/JeanMertz/chruby-fish/archive/v0.8.0.tar.gz
-tar -xzvf /tmp/chruby-fish-0.8.0.tar.gz -C /tmp/
-sudo make -C /tmp/chruby-fish-0.8.0 install
+# # install Ruby
+# # https://github.com/postmodern/chruby
+# wget -O /tmp/chruby-0.3.9.tar.gz https://github.com/postmodern/chruby/archive/v0.3.9.tar.gz
+# tar -xzvf /tmp/chruby-0.3.9.tar.gz -C /tmp/
+# sudo make -C /tmp/chruby-0.3.9 install
+# # https://github.com/JeanMertz/chruby-fish
+# wget -O /tmp/chruby-fish-0.8.0.tar.gz https://github.com/JeanMertz/chruby-fish/archive/v0.8.0.tar.gz
+# tar -xzvf /tmp/chruby-fish-0.8.0.tar.gz -C /tmp/
+# sudo make -C /tmp/chruby-fish-0.8.0 install
 
 # screen dimming
 gsettings set org.gnome.desktop.session idle-delay 3600 # screen will dim and lock after 1 hr
@@ -123,49 +122,49 @@ ln -s ~/Dropbox/ubuntu-config/.fonts ~/.fonts
 # configure indicator-multiload
 # one of the colors doesn't get set if the duplicated lines are deleted
 # loc are free, so w/e
-gsettings set de.mh21.indicator-multiload.general autostart 'true'
-gsettings set de.mh21.indicator-multiload.graphs.mem enabled 'true' # enable memory graph
-gsettings set de.mh21.indicator-multiload.graphs.disk enabled 'true' # enable disk graph
-gsettings set de.mh21.indicator-multiload.graphs.net enabled 'true' # enable network graph
-gsettings set de.mh21.indicator-multiload.graphs.cpu enabled 'true' # enable network graph
-gsettings set de.mh21.indicator-multiload.general background-color 'traditional:background'
-gsettings set de.mh21.indicator-multiload.trace color 'traditional:cpu1'
-gsettings set de.mh21.indicator-multiload.traces.load1 color 'traditional:load1'
-gsettings set de.mh21.indicator-multiload.traces.cpu1 color 'traditional:cpu1'
-gsettings set de.mh21.indicator-multiload.traces.cpu2 color 'traditional:cpu2'
-gsettings set de.mh21.indicator-multiload.traces.cpu3 color 'traditional:cpu3'
-gsettings set de.mh21.indicator-multiload.traces.cpu4 color 'traditional:cpu4'
-gsettings set de.mh21.indicator-multiload.traces.disk2 color 'traditional:disk2'
-gsettings set de.mh21.indicator-multiload.traces.disk1 color 'traditional:disk1'
-gsettings set de.mh21.indicator-multiload.traces.net1 color 'traditional:net1'
-gsettings set de.mh21.indicator-multiload.traces.net2 color 'traditional:net2'
-gsettings set de.mh21.indicator-multiload.traces.net3 color 'traditional:net3'
-gsettings set de.mh21.indicator-multiload.traces.swap1 color 'traditional:swap1'
-gsettings set de.mh21.indicator-multiload.traces.mem1 color 'traditional:mem1'
-gsettings set de.mh21.indicator-multiload.traces.mem2 color 'traditional:mem2'
-gsettings set de.mh21.indicator-multiload.traces.mem3 color 'traditional:mem3'
-gsettings set de.mh21.indicator-multiload.traces.mem4 color 'traditional:mem4'
+# gsettings set de.mh21.indicator-multiload.general autostart 'true'
+# gsettings set de.mh21.indicator-multiload.graphs.mem enabled 'true' # enable memory graph
+# gsettings set de.mh21.indicator-multiload.graphs.disk enabled 'true' # enable disk graph
+# gsettings set de.mh21.indicator-multiload.graphs.net enabled 'true' # enable network graph
+# gsettings set de.mh21.indicator-multiload.graphs.cpu enabled 'true' # enable network graph
+# gsettings set de.mh21.indicator-multiload.general background-color 'traditional:background'
+# gsettings set de.mh21.indicator-multiload.trace color 'traditional:cpu1'
+# gsettings set de.mh21.indicator-multiload.traces.load1 color 'traditional:load1'
+# gsettings set de.mh21.indicator-multiload.traces.cpu1 color 'traditional:cpu1'
+# gsettings set de.mh21.indicator-multiload.traces.cpu2 color 'traditional:cpu2'
+# gsettings set de.mh21.indicator-multiload.traces.cpu3 color 'traditional:cpu3'
+# gsettings set de.mh21.indicator-multiload.traces.cpu4 color 'traditional:cpu4'
+# gsettings set de.mh21.indicator-multiload.traces.disk2 color 'traditional:disk2'
+# gsettings set de.mh21.indicator-multiload.traces.disk1 color 'traditional:disk1'
+# gsettings set de.mh21.indicator-multiload.traces.net1 color 'traditional:net1'
+# gsettings set de.mh21.indicator-multiload.traces.net2 color 'traditional:net2'
+# gsettings set de.mh21.indicator-multiload.traces.net3 color 'traditional:net3'
+# gsettings set de.mh21.indicator-multiload.traces.swap1 color 'traditional:swap1'
+# gsettings set de.mh21.indicator-multiload.traces.mem1 color 'traditional:mem1'
+# gsettings set de.mh21.indicator-multiload.traces.mem2 color 'traditional:mem2'
+# gsettings set de.mh21.indicator-multiload.traces.mem3 color 'traditional:mem3'
+# gsettings set de.mh21.indicator-multiload.traces.mem4 color 'traditional:mem4'
 
 # requires clicks
 
 
 # install android studio and sdk
-echo ""
-echo ""
-echo ""
-echo "Download android studio and sdk to `~/bin`!"
-echo "https://developer.android.com/studio/index.html"
-echo ""
-echo "Install Nvidia drivers (this might break something major, so do it separately)"
-echo "sudo add-apt-repository ppa:graphics-drivers/ppa"
-echo "sudo apt-get install nvidia-367 or whatever is listed here: https://launchpad.net/~graphics-drivers/+archive/ubuntu/ppa"
-echo ""
-echo "Once dropbox finishes syncing, reload font cache"
-echo "sudo fc-cache -fv"
-
-echo "Don't forget to generate a new RSA key to upload to github!"
-
-echo "To use ubutnu with an HDPI monitor, adjust your scaling settings in Display preferences"
+# echo ""
+# echo ""
+# echo ""
+# echo "Download android studio and sdk to `~/bin`!"
+# echo "https://developer.android.com/studio/index.html"
+# echo ""
+# echo "Install Nvidia drivers (this might break something major, so do it separately)"
+# echo "sudo add-apt-repository ppa:graphics-drivers/ppa"
+# echo "sudo apt-get install nvidia-367 or whatever is listed here: https://launchpad.net/~graphics-drivers/+archive/ubuntu/ppa"
+# echo ""
+# echo "Once dropbox finishes syncing, reload font cache"
+# echo "sudo fc-cache -fv"
+#
+# echo "Don't forget to generate a new RSA key to upload to github!"
+#
+# echo "To use ubutnu with an HDPI monitor, adjust your scaling settings in Display preferences"
 
 # reboot
 echo ""
